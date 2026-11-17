@@ -1,0 +1,20 @@
+{
+  "name": "ats-visa-checklist",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vite build && touch dist/.nojekyll && cd dist && git init -q -b gh-pages && git add -A && git commit -q -m deploy && git push -f https://github.com/tonymaster147/ats-visa-checklist.git gh-pages && rm -rf .git"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "vite": "^8.3.8"
+  }
+}
