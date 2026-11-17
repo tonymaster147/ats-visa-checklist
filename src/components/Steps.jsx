@@ -37,8 +37,8 @@ export const Flag = ({ code, size = 32 }) => (
 export function StepTrip({ destId, natCode, onDest, onNat, onNext, stopNote }) {
   return (
     <section className="atsvc-panel">
-      <h2 className="atsvc-h2">Where are you going?</h2>
-      <p className="atsvc-muted">Choose your destination. More countries are coming soon.</p>
+      <h2 className="atsvc-h2">{DESTINATIONS.length === 1 ? 'Your destination' : 'Where are you going?'}</h2>
+      <p className="atsvc-muted">{DESTINATIONS.length === 1 ? 'We currently cover Australia.' : 'Choose your destination.'} More countries are coming soon.</p>
       <div className="atsvc-dest-grid" role="radiogroup" aria-label="Destination country">
         {DESTINATIONS.map((d) => (
           <button

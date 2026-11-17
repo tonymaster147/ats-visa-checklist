@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Stepper, StepTrip, StepVisa, StepProfile } from './components/Steps.jsx';
 import Results from './components/Results.jsx';
-import { getDestination } from './data/index.js';
+import { DESTINATIONS, getDestination } from './data/index.js';
 import { getNationality } from './data/nationalities.js';
 import { buildChecklist, scoreChecklist } from './lib/checklist.js';
 import { loadState, saveState } from './lib/storage.js';
@@ -12,11 +12,15 @@ const DEFAULT_PROFILE = {
 
 export default function App({ config }) {
   const saved = useRef(loadState()).current || {};
-  const [step, setStep] = useState(saved.step ?? 0);
-  const [maxStep, setMaxStep] = useState(saved.maxStep ?? 0);
-  const [destId, setDestId] = useState(saved.destId ?? config.defaultDestination ?? null);
+  const savedValid = saved.destId && getDestination(saved.destId);
+  const [step, setStep] = useState(savedValid ? saved.step ?? 0 : 0);
+  const [maxStep, setMaxStep] = useState(savedValid ? saved.maxStep ?? 0 : 0);
+  // Ignore saved/configured countries that are no longer offered; auto-select when only one exists.
+  const initialDest = [saved.destId, config.defaultDestination].find((id) => id && getDestination(id))
+    ?? (DESTINATIONS.length === 1 ? DESTINATIONS[0].id : null);
+  const [destId, setDestId] = useState(initialDest);
   const [natCode, setNatCode] = useState(saved.natCode ?? null);
-  const [visaId, setVisaId] = useState(saved.visaId ?? null);
+  const [visaId, setVisaId] = useState(savedValid ? saved.visaId ?? null : null);
   const [profile, setProfile] = useState({ ...DEFAULT_PROFILE, ...saved.profile });
   const [progress, setProgress] = useState(saved.progress ?? {});
   const rootRef = useRef(null);
